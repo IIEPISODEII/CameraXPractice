@@ -1,24 +1,19 @@
 package com.sb.camerax
 
 import android.Manifest
-import android.app.Instrumentation.ActivityResult
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.sb.camerax.ui.action.CameraScreenAction
 import com.sb.camerax.ui.sceen.CameraViewScreen
 import com.sb.camerax.ui.theme.CameraXTheme
 
 class MainActivity : ComponentActivity() {
-    val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+    private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
         if (it) startMainScreen()
     }
 
@@ -33,9 +28,19 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startMainScreen() {
+        val cameraScreenAction = object: CameraScreenAction {
+            override fun launchGallery() {
+                val intent = Intent(Intent.ACTION_VIEW, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                intent.type = "image/*"
+
+                if (intent.resolveActivity(this@MainActivity.packageManager) != null) {
+                    startActivity(intent)
+                }
+            }
+        }
         setContent {
             CameraXTheme {
-                CameraViewScreen()
+                CameraViewScreen(cameraScreenAction)
             }
         }
     }
