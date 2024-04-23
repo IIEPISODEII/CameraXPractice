@@ -6,11 +6,9 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -19,15 +17,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -44,6 +42,7 @@ import com.sb.camerax.R
 import com.sb.camerax.ui.action.CameraScreenAction
 import com.sb.camerax.ui.composables.CamIconButton
 import com.sb.camerax.ui.theme.TranslucentBlue
+import com.sb.camerax.util.setViewPort
 import com.sb.camerax.util.switchCameraDirection
 import com.sb.camerax.util.takePicture
 import kotlinx.coroutines.delay
@@ -151,6 +150,36 @@ fun CameraViewScreen(
                     .weight(0.15F, false)
                     .height(50.dp),
                 onClick = { cameraController.switchCameraDirection() },
+                painter = painterResource(id = R.drawable.baseline_cameraswitch_24)
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+                .background(color = Color(0x7F7F7F7F))
+                .align(Alignment.TopCenter),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            CamIconButton(
+                modifier = Modifier
+                    .height(40.dp),
+                onClick = {
+                    previewView.setViewPort()
+                },
+                imageVector = Icons.Rounded.Settings
+            )
+            CamIconButton(
+                modifier = Modifier
+                    .height(40.dp),
+                onClick = {  },
+                painter = painterResource(id = R.drawable.rounded_photo_camera_24)
+            )
+            CamIconButton(
+                modifier = Modifier
+                    .height(40.dp),
+                onClick = {  },
                 painter = painterResource(id = R.drawable.baseline_cameraswitch_24)
             )
         }
